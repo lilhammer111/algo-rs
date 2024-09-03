@@ -4,33 +4,33 @@ fn main() {
     let result = Solution::combination_sum(candidates, target);
     println!("result: {:?}", result);
 }
-
 struct Solution;
 impl Solution {
     pub fn combination_sum(candidates: Vec<i32>, target: i32) -> Vec<Vec<i32>> {
-        let mut candidates = candidates;
-        candidates.sort();
-        let mut output = vec![];
-        let mut combination = vec![];
-        let mut sum = 0;
-        let mut i = 0;
-        loop {
-            combination.push(candidates[i]);
-            sum += candidates[i];
-            if sum == target {
-                output.push(combination);
-                combination = vec![];
-            } else if sum < target {
+        let mut result = vec![];
+        let mut comb = vec![];
+        Self::back_trace(&candidates, target, &mut comb, &mut result, 0);
+        result
+    }
 
-
-
-            } else {
-                break
-            }
-
-
+    fn back_trace(
+        candidates: &[i32],
+        target: i32,
+        current: &mut Vec<i32>,
+        result: &mut Vec<Vec<i32>>,
+        start: usize,
+    ) {
+        if target == 0 {
+            result.push(current.clone());
+            return;
         }
 
-        vec![]
+        for i in start..candidates.len() {
+            if target >= candidates[i] {
+                current.push(candidates[i]);
+                Self::back_trace(candidates, target - candidates[i], current, result, i);
+                current.pop();
+            }
+        }
     }
 }
